@@ -1,0 +1,737 @@
+1. List all the columns (not the contents) of aircraft and flight tables.
+2. List the maker and model_no of all planes. 
+3. List all flights originating from ORD. Include the num, origin, dest, dep-time, arr_time. 
+4. List the name, emp_no and salary of all pilots.
+5. List the serial_no, model_no, maker of all aircrafts.
+6. List all flights departing date (dep_date) on Oct 31. Include the departing date, origin, dest, departing time (dep_time) and arriving time (arr_time). 
+7. List all names of those who book their flight and sort the output by name. Include name, origin, dest, dep_date, dep_time, arr_time. 
+8. Provide the details of the flight of  the passenger named Gates such as name, origin, dest,departing date, time of departure and arrival. 
+9. Who can fly the B757 model? Provide the name, model_no and emp_no in your query. 
+10. Give the total number of employees, the maximum salary, the minimum salary and the total salary of all employees.
+
+Solutions
+
+mysql> show tables;
++------------------+
+| Tables_in_mdesh2 |
++------------------+
+| aircraft         |
+| assigned_to      |
+| booked_on        |
+| branch           |
+| can_fly          |
+| departure        |
+| employee         |
+| equipment        |
+| flight           |
+| person           |
+| pilot            |
+| plane            |
++------------------+
+12 rows in set (0.00 sec)
+
+mysql> select * from aircraft;
++-----------+----------+
+| Serial_No | Model_No |
++-----------+----------+
+|        10 | B747     |
+|        11 | B727     |
+|        13 | B727     |
+|        13 | B747     |
+|        21 | DC10     |
+|        21 | DC9      |
+|        22 | B757     |
+|        22 | DC9      |
+|        23 | DC9      |
+|        24 | DC9      |
+|        70 | A310     |
+|        80 | A320     |
+|        93 | B757     |
++-----------+----------+
+13 rows in set (0.00 sec)
+
+mysql> select * from assigned_to;
++--------+----------+-----+
+| Emp_No | Dep_Date | Num |
++--------+----------+-----+
+|   1001 | Nov  1   | 100 |
+|   1001 | Oct 31   | 100 |
+|   1002 | Nov  1   | 100 |
+|   1002 | Oct 31   | 100 |
+|   1003 | Oct 31   | 100 |
+|   1003 | Oct 31   | 337 |
+|   1004 | Oct 31   | 100 |
+|   1004 | Oct 31   | 337 |
+|   1005 | Oct 31   | 337 |
+|   1006 | Nov  1   | 991 |
+|   1006 | Oct 31   | 337 |
+|   1007 | Nov  1   | 112 |
+|   1007 | Nov  1   | 991 |
+|   1007 | Oct 31   | 206 |
++--------+----------+-----+
+14 rows in set (0.00 sec)
+
+mysql> select * from booked_on;
++----------+----------+-----+
+| Name     | Dep_Date | Num |
++----------+----------+-----+
+| Clark    | Nov  1   | 100 |
+| Edwards  | Oct 31   | 449 |
+| Gates    | Nov  1   | 991 |
+| Green    | Oct 31   | 206 |
+| Hooper   | Oct 31   | 334 |
+| MacBride | Nov  1   | 991 |
+| Peters   | Nov  1   | 100 |
+| Phillips | Oct 31   | 449 |
+| Rowe     | Nov  1   | 100 |
+| Smith    | Nov  1   | 991 |
+| Smith    | Oct 31   | 100 |
+| Warnock  | Oct 31   | 449 |
++----------+----------+-----+
+12 rows in set (0.00 sec)
+
+mysql> select * from branch;
+Empty set (0.00 sec)
+
+mysql> select * from can_fly;
++--------+----------+
+| Emp_No | Model_No |
++--------+----------+
+|   1001 | B727     |
+|   1001 | B747     |
+|   1001 | DC10     |
+|   1002 | A320     |
+|   1002 | A340     |
+|   1002 | B757     |
+|   1002 | DC9      |
+|   1003 | A310     |
+|   1003 | DC9      |
++--------+----------+
+9 rows in set (0.00 sec)
+
+mysql> select * from departure;
++----------+-----+
+| Dep_Date | Num |
++----------+-----+
+| Nov  1   | 100 |
+| Nov  1   | 112 |
+| Nov  1   | 206 |
+| Nov  1   | 334 |
+| Nov  1   | 395 |
+| Nov  1   | 991 |
+| Oct 31   | 100 |
+| Oct 31   | 112 |
+| Oct 31   | 206 |
+| Oct 31   | 334 |
+| Oct 31   | 335 |
+| Oct 31   | 337 |
+| Oct 31   | 449 |
++----------+-----+
+13 rows in set (0.00 sec)
+
+mysql> select * from employee;
++----------+------------+--------+
+| Name     | Salary     | Emp_No |
++----------+------------+--------+
+| Jones    |   50000.00 |   1001 |
+| Peters   |   45000.00 |   1002 |
+| Rowe     |   35000.00 |   1003 |
+| Phillips |   25000.00 |   1004 |
+| Gates    | 5000000.00 |   1005 |
+| Clark    |  150000.00 |   1006 |
+| Warnock  |  500000.00 |   1007 |
++----------+------------+--------+
+7 rows in set (0.00 sec)
+
+mysql> select * from equipment;
++----------+-----+-----------+----------+
+| Dep_Date | Num | Serial_No | Model_No |
++----------+-----+-----------+----------+
+| Nov  1   | 112 |        21 | DC10     |
+| Nov  1   | 991 |        22 | B757     |
+| Oct 31   | 100 |        11 | B727     |
+| Oct 31   | 112 |        11 | B727     |
+| Oct 31   | 206 |        13 | B727     |
+| Oct 31   | 337 |        24 | DC9      |
++----------+-----+-----------+----------+
+6 rows in set (0.00 sec)
+
+mysql> select * from flight;
++-----+--------+------+----------+----------+
+| Num | Origin | Dest | Dep_Time | Arr_Time |
++-----+--------+------+----------+----------+
+| 100 | SLC    | BOS  | 08:00    | 17:50    |
+| 206 | DFW    | STL  | 09:00    | 11:40    |
+| 334 | ORD    | MIA  | 12:00    | 14:14    |
+| 335 | MIA    | ORD  | 15:00    | 17:14    |
+| 336 | ORD    | MIA  | 18:00    | 20:14    |
+| 337 | MIA    | ORD  | 20:30    | 23:53    |
+| 121 | STL    | SLC  | 07:00    | 09:13    |
+| 122 | STL    | YYV  | 08:30    | 10:19    |
+| 330 | JFK    | YYV  | 16:00    | 18:53    |
+| 991 | BOS    | ORD  | 17:00    | 18:22    |
+| 394 | DFW    | MIA  | 19:00    | 21:30    |
+| 395 | MIA    | DFW  | 21:00    | 23:43    |
+| 449 | CDG    | DEN  | 10:00    | 19:29    |
+| 930 | YYV    | DCA  | 13:00    | 16:10    |
+| 931 | DCA    | YYV  | 17:00    | 18:10    |
+| 932 | DCA    | YYV  | 18:00    | 19:10    |
+| 112 | DCA    | DEN  | 14:00    | 18:07    |
++-----+--------+------+----------+----------+
+17 rows in set (0.00 sec)
+
+mysql> select * from person;
++----------+----------------+--------------+
+| Name     | Address        | Phone        |
++----------+----------------+--------------+
+| Smith    | 123 Elm St.    | 801-556-2239 |
+| Jones    | 234 Oak St.    | 801-552-2943 |
+| Peters   | 345 Pine St.   | 801-393-2230 |
+| Green    | 435 Alder St.  | 801-933-2320 |
+| Rowe     | 348 Elder St.  | 801-343-2320 |
+| Phillips | 395 Pine St.   | 801-323-2320 |
+| Gates    | 285 Kapok St.  | 801-493-2203 |
+| Clark    | 223 Easy St.   | 801-193-2320 |
+| Warnock  | 775 Main St.   | 801-303-2222 |
+| Hooper   | 456 Maple St.  | 313-912-2101 |
+| Edwards  | 567 Spruce St. | 801-228-6729 |
+| Majeris  | 678 Willow St. | NULL         |
+| MacBride | 789 Fir St.    | NULL         |
++----------+----------------+--------------+
+13 rows in set (0.00 sec)
+
+mysql> select * from pilot;
++--------+
+| Emp_No |
++--------+
+|   1001 |
+|   1002 |
+|   1003 |
++--------+
+3 rows in set (0.00 sec)
+
+mysql> select * from plane;
++--------+----------+
+| Maker  | Model_No |
++--------+----------+
+| Boeing | B727     |
+| Boeing | B747     |
+| Boeing | B757     |
+| MD     | DC9      |
+| MD     | DC10     |
+| Airbus | A310     |
+| Airbus | A320     |
+| Airbus | A330     |
+| Airbus | A340     |
++--------+----------+
+9 rows in set (0.00 sec)
+
+mysql> desc aircraft;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| Serial_No | smallint(6) | NO   | PRI | NULL    |       |
+| Model_No  | varchar(15) | NO   | PRI | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
+mysql> show columns from aircraft;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| Serial_No | smallint(6) | NO   | PRI | NULL    |       |
+| Model_No  | varchar(15) | NO   | PRI | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
+mysql> desc flight;
++----------+-------------+------+-----+---------+-------+
+| Field    | Type        | Null | Key | Default | Extra |
++----------+-------------+------+-----+---------+-------+
+| Num      | smallint(6) | NO   | PRI | NULL    |       |
+| Origin   | varchar(3)  | YES  |     | NULL    |       |
+| Dest     | varchar(3)  | YES  |     | NULL    |       |
+| Dep_Time | varchar(5)  | YES  |     | NULL    |       |
+| Arr_Time | varchar(5)  | YES  |     | NULL    |       |
++----------+-------------+------+-----+---------+-------+
+5 rows in set (0.00 sec)
+
+mysql> select maker,model_no from plane;
++--------+----------+
+| maker  | model_no |
++--------+----------+
+| Boeing | B727     |
+| Boeing | B747     |
+| Boeing | B757     |
+| MD     | DC9      |
+| MD     | DC10     |
+| Airbus | A310     |
+| Airbus | A320     |
+| Airbus | A330     |
+| Airbus | A340     |
++--------+----------+
+9 rows in set (0.00 sec)
+
+mysql> select * from flight;
++-----+--------+------+----------+----------+
+| Num | Origin | Dest | Dep_Time | Arr_Time |
++-----+--------+------+----------+----------+
+| 100 | SLC    | BOS  | 08:00    | 17:50    |
+| 206 | DFW    | STL  | 09:00    | 11:40    |
+| 334 | ORD    | MIA  | 12:00    | 14:14    |
+| 335 | MIA    | ORD  | 15:00    | 17:14    |
+| 336 | ORD    | MIA  | 18:00    | 20:14    |
+| 337 | MIA    | ORD  | 20:30    | 23:53    |
+| 121 | STL    | SLC  | 07:00    | 09:13    |
+| 122 | STL    | YYV  | 08:30    | 10:19    |
+| 330 | JFK    | YYV  | 16:00    | 18:53    |
+| 991 | BOS    | ORD  | 17:00    | 18:22    |
+| 394 | DFW    | MIA  | 19:00    | 21:30    |
+| 395 | MIA    | DFW  | 21:00    | 23:43    |
+| 449 | CDG    | DEN  | 10:00    | 19:29    |
+| 930 | YYV    | DCA  | 13:00    | 16:10    |
+| 931 | DCA    | YYV  | 17:00    | 18:10    |
+| 932 | DCA    | YYV  | 18:00    | 19:10    |
+| 112 | DCA    | DEN  | 14:00    | 18:07    |
++-----+--------+------+----------+----------+
+17 rows in set (0.00 sec)
+
+mysql> select * from flight where origin='ORD';
++-----+--------+------+----------+----------+
+| Num | Origin | Dest | Dep_Time | Arr_Time |
++-----+--------+------+----------+----------+
+| 334 | ORD    | MIA  | 12:00    | 14:14    |
+| 336 | ORD    | MIA  | 18:00    | 20:14    |
++-----+--------+------+----------+----------+
+2 rows in set (0.00 sec)
+
+mysql> select * from employee where emp_no = (select emp_no from pilot)
+    -> ;
+ERROR 1242 (21000): Subquery returns more than 1 row
+mysql> select * from employee where emp_no in(select emp_no from pilot)
+    -> ;
++--------+----------+--------+
+| Name   | Salary   | Emp_No |
++--------+----------+--------+
+| Jones  | 50000.00 |   1001 |
+| Peters | 45000.00 |   1002 |
+| Rowe   | 35000.00 |   1003 |
++--------+----------+--------+
+3 rows in set (0.00 sec)
+
+mysql> select * from employee where emp_no in(select emp_no from pilot);
++--------+----------+--------+
+| Name   | Salary   | Emp_No |
++--------+----------+--------+
+| Jones  | 50000.00 |   1001 |
+| Peters | 45000.00 |   1002 |
+| Rowe   | 35000.00 |   1003 |
++--------+----------+--------+
+3 rows in set (0.00 sec)
+
+mysql> select * from employee;
++----------+------------+--------+
+| Name     | Salary     | Emp_No |
++----------+------------+--------+
+| Jones    |   50000.00 |   1001 |
+| Peters   |   45000.00 |   1002 |
+| Rowe     |   35000.00 |   1003 |
+| Phillips |   25000.00 |   1004 |
+| Gates    | 5000000.00 |   1005 |
+| Clark    |  150000.00 |   1006 |
+| Warnock  |  500000.00 |   1007 |
++----------+------------+--------+
+7 rows in set (0.00 sec)
+
+mysql> select * from pilot;
++--------+
+| Emp_No |
++--------+
+|   1001 |
+|   1002 |
+|   1003 |
++--------+
+3 rows in set (0.00 sec)
+
+mysql> select a.serial_no,a.model_no,p.maker from aircraft a,plane p where a.model_no=p.model_no;
++-----------+----------+--------+
+| serial_no | model_no | maker  |
++-----------+----------+--------+
+|        10 | B747     | Boeing |
+|        11 | B727     | Boeing |
+|        13 | B727     | Boeing |
+|        13 | B747     | Boeing |
+|        21 | DC10     | MD     |
+|        21 | DC9      | MD     |
+|        22 | B757     | Boeing |
+|        22 | DC9      | MD     |
+|        23 | DC9      | MD     |
+|        24 | DC9      | MD     |
+|        70 | A310     | Airbus |
+|        80 | A320     | Airbus |
+|        93 | B757     | Boeing |
++-----------+----------+--------+
+13 rows in set (0.00 sec)
+
+mysql> select * from departure;
++----------+-----+
+| Dep_Date | Num |
++----------+-----+
+| Nov  1   | 100 |
+| Nov  1   | 112 |
+| Nov  1   | 206 |
+| Nov  1   | 334 |
+| Nov  1   | 395 |
+| Nov  1   | 991 |
+| Oct 31   | 100 |
+| Oct 31   | 112 |
+| Oct 31   | 206 |
+| Oct 31   | 334 |
+| Oct 31   | 335 |
+| Oct 31   | 337 |
+| Oct 31   | 449 |
++----------+-----+
+13 rows in set (0.00 sec)
+
+mysql> select d.dep_date,f.origin,f.dest,f.dep_time,f.arr_time from departure,flight where d.dep_date='Oct 31';
+ERROR 1054 (42S22): Unknown column 'd.dep_date' in 'field list'
+mysql> select d.dep_date,f.origin,f.dest,f.dep_time,f.arr_time from departure d,flight f where d.dep_date='Oct 31';
++----------+--------+------+----------+----------+
+| dep_date | origin | dest | dep_time | arr_time |
++----------+--------+------+----------+----------+
+| Oct 31   | SLC    | BOS  | 08:00    | 17:50    |
+| Oct 31   | SLC    | BOS  | 08:00    | 17:50    |
+| Oct 31   | SLC    | BOS  | 08:00    | 17:50    |
+| Oct 31   | SLC    | BOS  | 08:00    | 17:50    |
+| Oct 31   | SLC    | BOS  | 08:00    | 17:50    |
+| Oct 31   | SLC    | BOS  | 08:00    | 17:50    |
+| Oct 31   | SLC    | BOS  | 08:00    | 17:50    |
+| Oct 31   | DFW    | STL  | 09:00    | 11:40    |
+| Oct 31   | DFW    | STL  | 09:00    | 11:40    |
+| Oct 31   | DFW    | STL  | 09:00    | 11:40    |
+| Oct 31   | DFW    | STL  | 09:00    | 11:40    |
+| Oct 31   | DFW    | STL  | 09:00    | 11:40    |
+| Oct 31   | DFW    | STL  | 09:00    | 11:40    |
+| Oct 31   | DFW    | STL  | 09:00    | 11:40    |
+| Oct 31   | ORD    | MIA  | 12:00    | 14:14    |
+| Oct 31   | ORD    | MIA  | 12:00    | 14:14    |
+| Oct 31   | ORD    | MIA  | 12:00    | 14:14    |
+| Oct 31   | ORD    | MIA  | 12:00    | 14:14    |
+| Oct 31   | ORD    | MIA  | 12:00    | 14:14    |
+| Oct 31   | ORD    | MIA  | 12:00    | 14:14    |
+| Oct 31   | ORD    | MIA  | 12:00    | 14:14    |
+| Oct 31   | MIA    | ORD  | 15:00    | 17:14    |
+| Oct 31   | MIA    | ORD  | 15:00    | 17:14    |
+| Oct 31   | MIA    | ORD  | 15:00    | 17:14    |
+| Oct 31   | MIA    | ORD  | 15:00    | 17:14    |
+| Oct 31   | MIA    | ORD  | 15:00    | 17:14    |
+| Oct 31   | MIA    | ORD  | 15:00    | 17:14    |
+| Oct 31   | MIA    | ORD  | 15:00    | 17:14    |
+| Oct 31   | ORD    | MIA  | 18:00    | 20:14    |
+| Oct 31   | ORD    | MIA  | 18:00    | 20:14    |
+| Oct 31   | ORD    | MIA  | 18:00    | 20:14    |
+| Oct 31   | ORD    | MIA  | 18:00    | 20:14    |
+| Oct 31   | ORD    | MIA  | 18:00    | 20:14    |
+| Oct 31   | ORD    | MIA  | 18:00    | 20:14    |
+| Oct 31   | ORD    | MIA  | 18:00    | 20:14    |
+| Oct 31   | MIA    | ORD  | 20:30    | 23:53    |
+| Oct 31   | MIA    | ORD  | 20:30    | 23:53    |
+| Oct 31   | MIA    | ORD  | 20:30    | 23:53    |
+| Oct 31   | MIA    | ORD  | 20:30    | 23:53    |
+| Oct 31   | MIA    | ORD  | 20:30    | 23:53    |
+| Oct 31   | MIA    | ORD  | 20:30    | 23:53    |
+| Oct 31   | MIA    | ORD  | 20:30    | 23:53    |
+| Oct 31   | STL    | SLC  | 07:00    | 09:13    |
+| Oct 31   | STL    | SLC  | 07:00    | 09:13    |
+| Oct 31   | STL    | SLC  | 07:00    | 09:13    |
+| Oct 31   | STL    | SLC  | 07:00    | 09:13    |
+| Oct 31   | STL    | SLC  | 07:00    | 09:13    |
+| Oct 31   | STL    | SLC  | 07:00    | 09:13    |
+| Oct 31   | STL    | SLC  | 07:00    | 09:13    |
+| Oct 31   | STL    | YYV  | 08:30    | 10:19    |
+| Oct 31   | STL    | YYV  | 08:30    | 10:19    |
+| Oct 31   | STL    | YYV  | 08:30    | 10:19    |
+| Oct 31   | STL    | YYV  | 08:30    | 10:19    |
+| Oct 31   | STL    | YYV  | 08:30    | 10:19    |
+| Oct 31   | STL    | YYV  | 08:30    | 10:19    |
+| Oct 31   | STL    | YYV  | 08:30    | 10:19    |
+| Oct 31   | JFK    | YYV  | 16:00    | 18:53    |
+| Oct 31   | JFK    | YYV  | 16:00    | 18:53    |
+| Oct 31   | JFK    | YYV  | 16:00    | 18:53    |
+| Oct 31   | JFK    | YYV  | 16:00    | 18:53    |
+| Oct 31   | JFK    | YYV  | 16:00    | 18:53    |
+| Oct 31   | JFK    | YYV  | 16:00    | 18:53    |
+| Oct 31   | JFK    | YYV  | 16:00    | 18:53    |
+| Oct 31   | BOS    | ORD  | 17:00    | 18:22    |
+| Oct 31   | BOS    | ORD  | 17:00    | 18:22    |
+| Oct 31   | BOS    | ORD  | 17:00    | 18:22    |
+| Oct 31   | BOS    | ORD  | 17:00    | 18:22    |
+| Oct 31   | BOS    | ORD  | 17:00    | 18:22    |
+| Oct 31   | BOS    | ORD  | 17:00    | 18:22    |
+| Oct 31   | BOS    | ORD  | 17:00    | 18:22    |
+| Oct 31   | DFW    | MIA  | 19:00    | 21:30    |
+| Oct 31   | DFW    | MIA  | 19:00    | 21:30    |
+| Oct 31   | DFW    | MIA  | 19:00    | 21:30    |
+| Oct 31   | DFW    | MIA  | 19:00    | 21:30    |
+| Oct 31   | DFW    | MIA  | 19:00    | 21:30    |
+| Oct 31   | DFW    | MIA  | 19:00    | 21:30    |
+| Oct 31   | DFW    | MIA  | 19:00    | 21:30    |
+| Oct 31   | MIA    | DFW  | 21:00    | 23:43    |
+| Oct 31   | MIA    | DFW  | 21:00    | 23:43    |
+| Oct 31   | MIA    | DFW  | 21:00    | 23:43    |
+| Oct 31   | MIA    | DFW  | 21:00    | 23:43    |
+| Oct 31   | MIA    | DFW  | 21:00    | 23:43    |
+| Oct 31   | MIA    | DFW  | 21:00    | 23:43    |
+| Oct 31   | MIA    | DFW  | 21:00    | 23:43    |
+| Oct 31   | CDG    | DEN  | 10:00    | 19:29    |
+| Oct 31   | CDG    | DEN  | 10:00    | 19:29    |
+| Oct 31   | CDG    | DEN  | 10:00    | 19:29    |
+| Oct 31   | CDG    | DEN  | 10:00    | 19:29    |
+| Oct 31   | CDG    | DEN  | 10:00    | 19:29    |
+| Oct 31   | CDG    | DEN  | 10:00    | 19:29    |
+| Oct 31   | CDG    | DEN  | 10:00    | 19:29    |
+| Oct 31   | YYV    | DCA  | 13:00    | 16:10    |
+| Oct 31   | YYV    | DCA  | 13:00    | 16:10    |
+| Oct 31   | YYV    | DCA  | 13:00    | 16:10    |
+| Oct 31   | YYV    | DCA  | 13:00    | 16:10    |
+| Oct 31   | YYV    | DCA  | 13:00    | 16:10    |
+| Oct 31   | YYV    | DCA  | 13:00    | 16:10    |
+| Oct 31   | YYV    | DCA  | 13:00    | 16:10    |
+| Oct 31   | DCA    | YYV  | 17:00    | 18:10    |
+| Oct 31   | DCA    | YYV  | 17:00    | 18:10    |
+| Oct 31   | DCA    | YYV  | 17:00    | 18:10    |
+| Oct 31   | DCA    | YYV  | 17:00    | 18:10    |
+| Oct 31   | DCA    | YYV  | 17:00    | 18:10    |
+| Oct 31   | DCA    | YYV  | 17:00    | 18:10    |
+| Oct 31   | DCA    | YYV  | 17:00    | 18:10    |
+| Oct 31   | DCA    | YYV  | 18:00    | 19:10    |
+| Oct 31   | DCA    | YYV  | 18:00    | 19:10    |
+| Oct 31   | DCA    | YYV  | 18:00    | 19:10    |
+| Oct 31   | DCA    | YYV  | 18:00    | 19:10    |
+| Oct 31   | DCA    | YYV  | 18:00    | 19:10    |
+| Oct 31   | DCA    | YYV  | 18:00    | 19:10    |
+| Oct 31   | DCA    | YYV  | 18:00    | 19:10    |
+| Oct 31   | DCA    | DEN  | 14:00    | 18:07    |
+| Oct 31   | DCA    | DEN  | 14:00    | 18:07    |
+| Oct 31   | DCA    | DEN  | 14:00    | 18:07    |
+| Oct 31   | DCA    | DEN  | 14:00    | 18:07    |
+| Oct 31   | DCA    | DEN  | 14:00    | 18:07    |
+| Oct 31   | DCA    | DEN  | 14:00    | 18:07    |
+| Oct 31   | DCA    | DEN  | 14:00    | 18:07    |
++----------+--------+------+----------+----------+
+119 rows in set (0.00 sec)
+
+mysql> select distinct d.dep_date,f.origin,f.dest,f.dep_time,f.arr_time from departure d,flight f where d.dep_date='Oct 31';
++----------+--------+------+----------+----------+
+| dep_date | origin | dest | dep_time | arr_time |
++----------+--------+------+----------+----------+
+| Oct 31   | SLC    | BOS  | 08:00    | 17:50    |
+| Oct 31   | DFW    | STL  | 09:00    | 11:40    |
+| Oct 31   | ORD    | MIA  | 12:00    | 14:14    |
+| Oct 31   | MIA    | ORD  | 15:00    | 17:14    |
+| Oct 31   | ORD    | MIA  | 18:00    | 20:14    |
+| Oct 31   | MIA    | ORD  | 20:30    | 23:53    |
+| Oct 31   | STL    | SLC  | 07:00    | 09:13    |
+| Oct 31   | STL    | YYV  | 08:30    | 10:19    |
+| Oct 31   | JFK    | YYV  | 16:00    | 18:53    |
+| Oct 31   | BOS    | ORD  | 17:00    | 18:22    |
+| Oct 31   | DFW    | MIA  | 19:00    | 21:30    |
+| Oct 31   | MIA    | DFW  | 21:00    | 23:43    |
+| Oct 31   | CDG    | DEN  | 10:00    | 19:29    |
+| Oct 31   | YYV    | DCA  | 13:00    | 16:10    |
+| Oct 31   | DCA    | YYV  | 17:00    | 18:10    |
+| Oct 31   | DCA    | YYV  | 18:00    | 19:10    |
+| Oct 31   | DCA    | DEN  | 14:00    | 18:07    |
++----------+--------+------+----------+----------+
+17 rows in set (0.00 sec)
+
+mysql> select * from departure;
++----------+-----+
+| Dep_Date | Num |
++----------+-----+
+| Nov  1   | 100 |
+| Nov  1   | 112 |
+| Nov  1   | 206 |
+| Nov  1   | 334 |
+| Nov  1   | 395 |
+| Nov  1   | 991 |
+| Oct 31   | 100 |
+| Oct 31   | 112 |
+| Oct 31   | 206 |
+| Oct 31   | 334 |
+| Oct 31   | 335 |
+| Oct 31   | 337 |
+| Oct 31   | 449 |
++----------+-----+
+13 rows in set (0.00 sec)
+
+mysql> select * from flight;
++-----+--------+------+----------+----------+
+| Num | Origin | Dest | Dep_Time | Arr_Time |
++-----+--------+------+----------+----------+
+| 100 | SLC    | BOS  | 08:00    | 17:50    |
+| 206 | DFW    | STL  | 09:00    | 11:40    |
+| 334 | ORD    | MIA  | 12:00    | 14:14    |
+| 335 | MIA    | ORD  | 15:00    | 17:14    |
+| 336 | ORD    | MIA  | 18:00    | 20:14    |
+| 337 | MIA    | ORD  | 20:30    | 23:53    |
+| 121 | STL    | SLC  | 07:00    | 09:13    |
+| 122 | STL    | YYV  | 08:30    | 10:19    |
+| 330 | JFK    | YYV  | 16:00    | 18:53    |
+| 991 | BOS    | ORD  | 17:00    | 18:22    |
+| 394 | DFW    | MIA  | 19:00    | 21:30    |
+| 395 | MIA    | DFW  | 21:00    | 23:43    |
+| 449 | CDG    | DEN  | 10:00    | 19:29    |
+| 930 | YYV    | DCA  | 13:00    | 16:10    |
+| 931 | DCA    | YYV  | 17:00    | 18:10    |
+| 932 | DCA    | YYV  | 18:00    | 19:10    |
+| 112 | DCA    | DEN  | 14:00    | 18:07    |
++-----+--------+------+----------+----------+
+17 rows in set (0.00 sec)
+
+mysql> select distinct d.dep_date,f.origin,f.dest,f.dep_time,f.arr_time from departure d,flight f where d.num=f.num and d.dep_date='Oct 31';
++----------+--------+------+----------+----------+
+| dep_date | origin | dest | dep_time | arr_time |
++----------+--------+------+----------+----------+
+| Oct 31   | SLC    | BOS  | 08:00    | 17:50    |
+| Oct 31   | DCA    | DEN  | 14:00    | 18:07    |
+| Oct 31   | DFW    | STL  | 09:00    | 11:40    |
+| Oct 31   | ORD    | MIA  | 12:00    | 14:14    |
+| Oct 31   | MIA    | ORD  | 15:00    | 17:14    |
+| Oct 31   | MIA    | ORD  | 20:30    | 23:53    |
+| Oct 31   | CDG    | DEN  | 10:00    | 19:29    |
++----------+--------+------+----------+----------+
+7 rows in set (0.00 sec)
+
+mysql> select b.name,f.origin,f.dest,b.dep_date,f.dep_time,f.arr_time from booked_on b,flight f where b.num=f.num sort by(b.name);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'sort by(b.name)' at line 1
+mysql> select b.name,f.origin,f.dest,b.dep_date,f.dep_time,f.arr_time from booked_on b,flight f where b.num=f.num order by(b.name);
++----------+--------+------+----------+----------+----------+
+| name     | origin | dest | dep_date | dep_time | arr_time |
++----------+--------+------+----------+----------+----------+
+| Clark    | SLC    | BOS  | Nov  1   | 08:00    | 17:50    |
+| Edwards  | CDG    | DEN  | Oct 31   | 10:00    | 19:29    |
+| Gates    | BOS    | ORD  | Nov  1   | 17:00    | 18:22    |
+| Green    | DFW    | STL  | Oct 31   | 09:00    | 11:40    |
+| Hooper   | ORD    | MIA  | Oct 31   | 12:00    | 14:14    |
+| MacBride | BOS    | ORD  | Nov  1   | 17:00    | 18:22    |
+| Peters   | SLC    | BOS  | Nov  1   | 08:00    | 17:50    |
+| Phillips | CDG    | DEN  | Oct 31   | 10:00    | 19:29    |
+| Rowe     | SLC    | BOS  | Nov  1   | 08:00    | 17:50    |
+| Smith    | BOS    | ORD  | Nov  1   | 17:00    | 18:22    |
+| Smith    | SLC    | BOS  | Oct 31   | 08:00    | 17:50    |
+| Warnock  | CDG    | DEN  | Oct 31   | 10:00    | 19:29    |
++----------+--------+------+----------+----------+----------+
+12 rows in set (0.00 sec)
+
+mysql> select * booked_on
+    -> ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'booked_on' at line 1
+mysql> select * from booked_on;
++----------+----------+-----+
+| Name     | Dep_Date | Num |
++----------+----------+-----+
+| Clark    | Nov  1   | 100 |
+| Edwards  | Oct 31   | 449 |
+| Gates    | Nov  1   | 991 |
+| Green    | Oct 31   | 206 |
+| Hooper   | Oct 31   | 334 |
+| MacBride | Nov  1   | 991 |
+| Peters   | Nov  1   | 100 |
+| Phillips | Oct 31   | 449 |
+| Rowe     | Nov  1   | 100 |
+| Smith    | Nov  1   | 991 |
+| Smith    | Oct 31   | 100 |
+| Warnock  | Oct 31   | 449 |
++----------+----------+-----+
+12 rows in set (0.00 sec)
+
+mysql> exit
+mysql> mysql> select b.name,f.origin,f.dest,b.dep_date,f.dep_time,f.arr_time from booked_on b,flight f where b.num=f.flight and b.name='Gates';
+ERROR 1054 (42S22): Unknown column 'f.flight' in 'where clause'
+mysql> select b.name,f.origin,f.dest,b.dep_date,f.dep_time,f.arr_time from booked_on b,flight f where b.num=f.num and b.name='Gates';
++-------+--------+------+----------+----------+----------+
+| name  | origin | dest | dep_date | dep_time | arr_time |
++-------+--------+------+----------+----------+----------+
+| Gates | BOS    | ORD  | Nov  1   | 17:00    | 18:22    |
++-------+--------+------+----------+----------+----------+
+1 row in set (0.00 sec)
+
+mysql> select e.name,c.model_no,c.emp_no from employee e,can_fly c where e.emp_no=c.emp_no;
++--------+----------+--------+
+| name   | model_no | emp_no |
++--------+----------+--------+
+| Jones  | B727     |   1001 |
+| Jones  | B747     |   1001 |
+| Jones  | DC10     |   1001 |
+| Peters | A320     |   1002 |
+| Peters | A340     |   1002 |
+| Peters | B757     |   1002 |
+| Peters | DC9      |   1002 |
+| Rowe   | A310     |   1003 |
+| Rowe   | DC9      |   1003 |
++--------+----------+--------+
+9 rows in set (0.00 sec)
+
+mysql> select e.name,c.model_no,c.emp_no from employee e,can_fly c where e.emp_no=c.emp_no and c.model_no='B757';
++--------+----------+--------+
+| name   | model_no | emp_no |
++--------+----------+--------+
+| Peters | B757     |   1002 |
++--------+----------+--------+
+1 row in set (0.00 sec)
+
+mysql> select * from employee;
++----------+------------+--------+
+| Name     | Salary     | Emp_No |
++----------+------------+--------+
+| Jones    |   50000.00 |   1001 |
+| Peters   |   45000.00 |   1002 |
+| Rowe     |   35000.00 |   1003 |
+| Phillips |   25000.00 |   1004 |
+| Gates    | 5000000.00 |   1005 |
+| Clark    |  150000.00 |   1006 |
+| Warnock  |  500000.00 |   1007 |
++----------+------------+--------+
+7 rows in set (0.00 sec)
+
+mysql> select count(*) from employee;
++----------+
+| count(*) |
++----------+
+|        7 |
++----------+
+1 row in set (0.00 sec)
+
+mysql> 
+mysql> select count(*)"No of Employees" from employee;
++-----------------+
+| No of Employees |
++-----------------+
+|               7 |
++-----------------+
+1 row in set (0.00 sec)
+
+mysql> select count(*)"No of Employees",max(salary),min(salary),count(salary) from employee;
++-----------------+-------------+-------------+---------------+
+| No of Employees | max(salary) | min(salary) | count(salary) |
++-----------------+-------------+-------------+---------------+
+|               7 |  5000000.00 |    25000.00 |             7 |
++-----------------+-------------+-------------+---------------+
+1 row in set (0.00 sec)
+
+mysql> select count(*)"No of Employees",max(salary)"Max Salary",min(salary)"Min Salary",sum(salary)"Total Salary" from employee;
++-----------------+------------+------------+--------------+
+| No of Employees | Max Salary | Min Salary | Total Salary |
++-----------------+------------+------------+--------------+
+|               7 | 5000000.00 |   25000.00 |   5805000.00 |
++-----------------+------------+------------+--------------+
+1 row in set (0.00 sec)
+
+mysql> select count(*)"No of Employees",max(salary)"Maximum Salary",min(salary)"Minimum Salary",sum(salary)"Total Salary" from employee;
++-----------------+----------------+----------------+--------------+
+| No of Employees | Maximum Salary | Minimum Salary | Total Salary |
++-----------------+----------------+----------------+--------------+
+|               7 |     5000000.00 |       25000.00 |   5805000.00 |
++-----------------+----------------+----------------+--------------+
+1 row in set (0.00 sec)
